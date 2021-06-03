@@ -4,15 +4,22 @@
 using namespace std;
 
 int unKnapsack(int wt[], int val[], int n, int W){
-	int t[W+1];
-	memset(t, 0, sizeof t);
+	int t[n+1][W+1];
+	for(int i=0;i<=n;i++)
+		for(int j=0;j<=W;j++)
+			if(i==0||j==0)
+				t[i][j]=0;
 	
-	for (int i=0; i<=W; i++)
-      for (int j=0; j<n; j++)
-         if (wt[j] <= i)
-            t[i] = max(t[i], t[i-wt[j]] + val[j]);
+	for(int i=1;i<n+1;i++)
+		for(int j=1;j<W+1;j++){
+			if(wt[i-1]<=j){
+				t[i][j]=max(val[i-1]+t[i][j-wt[i-1]],t[i-1][j]);
+			}
+			else
+				t[i][j]=t[i-1][j];
+		}
 		
-	return t[W];
+	return t[n][W];
 }
 
 int main(){
